@@ -15,7 +15,7 @@ export async function GET() {
     "Content-Type": "application/json",
     "X-Lang": "es",
     "X-League": "514789",
-    "X-User": String(user.id),
+    "X-User": String(user.id ?? "5132475"),
     "X-Version": "628",
   };
 
