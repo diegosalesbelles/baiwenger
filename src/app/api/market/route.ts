@@ -6,6 +6,7 @@ export const revalidate = 3600; // cache for 1 hour — data only changes once a
 
 export async function GET() {
   const user = await requireAuth();
+  console.log("Market route - user from session:", JSON.stringify({ id: user.id, name: user.name, hasToken: !!user.token, tokenPreview: user.token?.slice(0, 20) }));
 
   // Fetch market + player/team data in parallel, using the user's Biwenger token
   // Headers extracted from the n8n workflow — Biwenger requires all of these
