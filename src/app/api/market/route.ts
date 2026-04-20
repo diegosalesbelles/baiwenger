@@ -8,14 +8,23 @@ export async function GET() {
   const user = await requireAuth();
 
   // Fetch market + player/team data in parallel, using the user's Biwenger token
-  const headers = {
+  // Headers extracted from the n8n workflow — Biwenger requires all of these
+  const biwengerHeaders = {
     Authorization: `Bearer ${user.token}`,
     "Content-Type": "application/json",
+    "X-Lang": "es",
+    "X-League": "514789",
+    "X-User": String(user.id),
+    "X-Version": "628",
+  };
+
+  const laLigaHeaders = {
+    "X-Lang": "es",
   };
 
   const [marketRes, dataRes] = await Promise.all([
-    fetch("https://biwenger.as.com/api/v2/market", { headers }),
-    fetch("https://cf.biwenger.com/api/v2/competitions/la-liga/data", { headers }),
+    fetch("https://biwenger.as.com/api/v2/market", { headers: biwengerHeaders }),
+    fetch("https://cf.biwenger.com/api/v2/competitions/la-liga/data?lang=es&score=5", { headers: laLigaHeaders }),
   ]);
 
   if (!marketRes.ok || !dataRes.ok) {
